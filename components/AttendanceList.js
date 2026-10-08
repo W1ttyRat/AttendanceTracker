@@ -153,33 +153,34 @@ export default function AttendanceList() {
   }
 
   return (
-    <section className="card shadow-sm" aria-labelledby="attendance-heading">
-      <div className="card-header bg-transparent border-0 px-0 pt-0">
+    <section className="card attendance-card" aria-labelledby="attendance-heading">
+      <div className="card-header">
         <div>
-          <h2 id="attendance-heading" className="h4 mb-1">
-            Tunde tähistamine
+          <p className="section-kicker">TODAY&apos;S SESSION</p>
+          <h2 id="attendance-heading">
+            Tundide tähistamine
           </h2>
-          <p className="text-muted mb-0">Vali kursus ja kuupäev, siis märkige osalejate kohalolek.</p>
+          <p>Vali kursus ja kuupäev, siis märkige osalejate kohalolek.</p>
         </div>
-        <span className="badge rounded-pill fs-6">
-          {presentCount} / {enrolled.length} kohal
+        <span className="summary-badge">
+          <strong>{presentCount}</strong> / {enrolled.length} kohal
         </span>
       </div>
 
       {error !== "" && (
-        <p className="alert alert-danger mb-3" role="alert">
+        <p className="message message-error" role="alert">
           Viga: {error}
         </p>
       )}
 
-      <div className="card-body px-0 pt-0">
-        <div className="row g-3 align-items-end">
-          <div className="col-12 col-md-6">
-            <label htmlFor="class-select" className="form-label fw-semibold">Kursus</label>
+      <div className="card-section">
+        <div className="form-row">
+          <div className="form-field">
+            <label htmlFor="class-select">Kursus</label>
             {classes.length > 0 && (
               <select
                 id="class-select"
-                className="form-select"
+                className="select-control"
                 value={classId}
                 onChange={(e) => setClassId(e.target.value)}
               >
@@ -191,11 +192,11 @@ export default function AttendanceList() {
               </select>
             )}
           </div>
-          <div className="col-12 col-md-6">
-            <label htmlFor="session-date" className="form-label fw-semibold">Kuupäev</label>
+          <div className="form-field">
+            <label htmlFor="session-date">Kuupäev</label>
             <input
               id="session-date"
-              className="form-control"
+              className="input-control"
               type="date"
               value={date}
               onChange={(e) => {
@@ -213,52 +214,51 @@ export default function AttendanceList() {
           </div>
         </div>
 
-        <div className="row g-3 align-items-end mt-3">
-          <div className="col-12 col-md-8">
-            <label htmlFor="new-class" className="form-label fw-semibold">Uue kursuse nimi</label>
+        <div className="form-row add-row">
+          <div className="form-field">
+            <label htmlFor="new-class">Uue kursuse nimi</label>
             <input
               id="new-class"
-              className="form-control"
+              className="input-control"
               type="text"
               value={newClassName}
               onChange={(e) => setNewClassName(e.target.value)}
               placeholder="Näiteks 7. klass"
             />
           </div>
-          <div className="col-12 col-md-4">
-            <button className="btn btn-primary w-100" onClick={handleAddClass}>Lisa kursus</button>
+          <div className="form-action">
+            <button onClick={handleAddClass}>Lisa kursus</button>
           </div>
         </div>
       </div>
 
       {classId !== "" && (
-        <div className="card-body px-0">
-          <div className="card-header bg-transparent border-0 px-0 pt-0 mb-3">
+        <div id="participants" className="card-section participant-section">
+          <div className="card-header compact-header">
             <div>
-              <h2 className="h5 mb-1">Osalejad</h2>
-              <p className="text-muted mb-0">Valige iga osaleja kohalolek.</p>
+              <h2>Osalejad</h2>
+              <p>Valige iga osaleja kohalolek.</p>
             </div>
           </div>
 
           {enrolled.length === 0 ? (
             <p className="empty-state">Sellel kursusel pole veel osalejaid.</p>
           ) : (
-            <ul className="list-unstyled d-grid gap-2 mb-3">
+            <ul className="attendee-list">
               {enrolled.map((s) => (
-                <li className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-2 rounded-3 border p-3 bg-white" key={s.id}>
-                  <div className="d-flex align-items-center gap-2 flex-wrap">
+                <li className="attendee-item" key={s.id}>
+                  <div className="attendee-name">
                     <input
                       id={`attendee-${s.id}`}
-                      className="form-check-input"
+                      className="attendance-check"
                       type="checkbox"
                       checked={statuses[s.id] === "present"}
                       onChange={(e) => handleStatusChange(s.id, e.target.checked ? "present" : "absent")}
                     />
-                    <label htmlFor={`attendee-${s.id}`} className="form-check-label mb-0 fw-semibold">{s.full_name}</label>
+                    <label htmlFor={`attendee-${s.id}`}>{s.full_name}</label>
                   </div>
                   <select
-                    className="form-select"
-                    style={{ minWidth: 190, width: "auto" }}
+                    className="attendee-select"
                     value={statuses[s.id] || ""}
                     onChange={(e) => handleStatusChange(s.id, e.target.value)}
                     aria-label={`${s.full_name} kohalolek`}
@@ -275,35 +275,35 @@ export default function AttendanceList() {
             </ul>
           )}
 
-          <div className="border-top pt-3 mb-3">
-            <h2 className="h6 mb-2">Lisa uus osaleja</h2>
-            <div className="row g-3 align-items-end">
-              <div className="col-12 col-md-8">
-                <label htmlFor="new-student" className="form-label fw-semibold">Osaleja nimi</label>
+          <div className="subsection">
+            <h2 className="subsection-title">Lisa uus osaleja</h2>
+            <div className="form-row">
+              <div className="form-field">
+                <label htmlFor="new-student">Osaleja nimi</label>
                 <input
                   id="new-student"
-                  className="form-control"
+                  className="input-control"
                   type="text"
                   value={newStudentName}
                   onChange={(e) => setNewStudentName(e.target.value)}
                   placeholder="Tähe osaleja nimi"
                 />
               </div>
-              <div className="col-12 col-md-4">
-                <button className="btn btn-primary w-100" onClick={handleAddStudent}>Lisa uus osaleja</button>
+              <div className="form-action">
+                <button onClick={handleAddStudent}>Lisa uus osaleja</button>
               </div>
             </div>
           </div>
 
           {notEnrolled.length > 0 && (
-            <div className="border-top pt-3">
-              <h2 className="h6 mb-2">Lisa kursusele</h2>
-              <div className="row g-3 align-items-end">
-                <div className="col-12 col-md-8">
-                  <label htmlFor="student-enrollment" className="form-label fw-semibold">Õpilane</label>
+            <div className="subsection">
+              <h2 className="subsection-title">Lisa kursusele</h2>
+              <div className="form-row">
+                  <div className="form-field">
+                  <label htmlFor="student-enrollment">Õpilane</label>
                   <select
                     id="student-enrollment"
-                    className="form-select"
+                    className="select-control"
                     value={studentToEnroll}
                     onChange={(e) => setStudentToEnroll(e.target.value)}
                   >
@@ -315,9 +315,9 @@ export default function AttendanceList() {
                     ))}
                   </select>
                 </div>
-                <div className="col-12 col-md-4 d-flex gap-2">
-                  <button className="btn btn-primary flex-grow-1" onClick={handleEnrollOne}>Lisa kursusele</button>
-                  <button className="btn btn-outline-primary flex-grow-1" onClick={handleEnrollAll}>
+                <div className="form-action button-pair">
+                  <button onClick={handleEnrollOne}>Lisa kursusele</button>
+                  <button className="secondary" onClick={handleEnrollAll}>
                     Lisa kõik õpilased kursusele
                   </button>
                 </div>
