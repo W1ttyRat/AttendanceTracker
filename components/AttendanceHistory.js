@@ -59,25 +59,26 @@ export default function AttendanceHistory() {
   }, [classId, refreshCount]);
 
   return (
-    <section className="card shadow-sm" aria-labelledby="history-heading">
-      <div className="card-header bg-transparent border-0 px-0 pt-0">
+    <section className="card" aria-labelledby="history-heading">
+      <div className="card-header">
         <div>
-          <h2 id="history-heading" className="h4 mb-1">
-            Elimiste tundide kohalolek
+          <p className="section-kicker">OVERVIEW</p>
+          <h2 id="history-heading">
+            Eelmiste tundide kohalolek
           </h2>
-          <p className="text-muted mb-0">Vaata osalejate staatust iga sessiooni kohta.</p>
+          <p>Vaata osalejate staatust iga sessiooni kohta.</p>
         </div>
       </div>
 
-      {error !== "" && <p className="alert alert-danger mb-3">Viga: {error}</p>}
+      {error !== "" && <p className="message message-error">Viga: {error}</p>}
 
       {classes.length > 0 && (
-        <div className="row g-3 align-items-end mb-3">
-          <div className="col-12 col-md-8">
-            <label htmlFor="history-class" className="form-label fw-semibold">Kursus</label>
+        <div className="form-row history-controls">
+          <div className="form-field">
+            <label htmlFor="history-class">Kursus</label>
             <select
               id="history-class"
-              className="form-select"
+              className="select-control"
               value={classId}
               onChange={(e) => setClassId(e.target.value)}
             >
@@ -88,9 +89,9 @@ export default function AttendanceHistory() {
               ))}
             </select>
           </div>
-          <div className="col-12 col-md-4">
+          <div className="form-action">
             <button
-              className="btn btn-outline-primary w-100"
+              className="secondary"
               onClick={() => setRefreshCount(refreshCount + 1)}
             >
               Värskenda
@@ -99,15 +100,15 @@ export default function AttendanceHistory() {
         </div>
       )}
 
-      <div className="card-body px-0 pb-0">
+      <div>
         {sessions.length === 0 ? (
           <p className="empty-state">
             Selle kursuse tunde pole veel märgitud.
           </p>
         ) : (
-          <div className="table-responsive rounded-3">
-            <table className="table table-striped table-hover align-middle mb-0">
-              <thead className="table-light">
+          <div className="table-wrap">
+            <table>
+              <thead>
                 <tr>
                   <th>Osaleja</th>
                   {sessions.map((se) => (
