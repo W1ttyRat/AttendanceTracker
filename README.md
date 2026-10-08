@@ -27,6 +27,9 @@ Open `http://localhost:3000`.
 ## Project structure
 
 - `app/layout.js` - root layout and application metadata
+
+## public key
+sb_publishable_Iek6yZEkn-nnr0s8nyrOPw_lkrJNoc2
 - `app/page.js` - App Router home page
 - `app/api/health/route.js` - Node.js-compatible App Router route handler
 
