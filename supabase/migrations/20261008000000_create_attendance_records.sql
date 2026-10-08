@@ -126,6 +126,24 @@ USING (
     )
 );
 
+CREATE POLICY "Users can enroll their own students in their classes"
+ON class_enrollments
+FOR INSERT
+WITH CHECK (
+    EXISTS (
+        SELECT 1
+        FROM classes
+        WHERE classes.id = class_enrollments.class_id
+          AND classes.teacher_id = auth.uid()
+    )
+    AND EXISTS (
+        SELECT 1
+        FROM students
+        WHERE students.id = class_enrollments.student_id
+          AND students.created_by = auth.uid()
+    )
+);
+
 CREATE POLICY "Teachers can manage sessions for their classes"
 ON attendance_sessions
 FOR ALL

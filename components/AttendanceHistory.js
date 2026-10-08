@@ -59,60 +59,89 @@ export default function AttendanceHistory() {
   }, [classId, refreshCount]);
 
   return (
-    <div>
-      <h2>Eelmiste tundide kohalolek</h2>
-      {error !== "" && <p>Viga: {error}</p>}
+    <section className="card shadow-sm" aria-labelledby="history-heading">
+      <div className="card-header bg-transparent border-0 px-0 pt-0">
+        <div>
+          <h2 id="history-heading" className="h4 mb-1">
+            Elimiste tundide kohalolek
+          </h2>
+          <p className="text-muted mb-0">Vaata osalejate staatust iga sessiooni kohta.</p>
+        </div>
+      </div>
+
+      {error !== "" && <p className="alert alert-danger mb-3">Viga: {error}</p>}
 
       {classes.length > 0 && (
-        <div>
-          <select value={classId} onChange={(e) => setClassId(e.target.value)}>
-            {classes.map((c) => (
-              <option key={c.id} value={c.id}>
-                {c.name}
-              </option>
-            ))}
-          </select>
-          <button onClick={() => setRefreshCount(refreshCount + 1)}>
-            Värskenda
-          </button>
+        <div className="row g-3 align-items-end mb-3">
+          <div className="col-12 col-md-8">
+            <label htmlFor="history-class" className="form-label fw-semibold">Kursus</label>
+            <select
+              id="history-class"
+              className="form-select"
+              value={classId}
+              onChange={(e) => setClassId(e.target.value)}
+            >
+              {classes.map((c) => (
+                <option key={c.id} value={c.id}>
+                  {c.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-12 col-md-4">
+            <button
+              className="btn btn-outline-primary w-100"
+              onClick={() => setRefreshCount(refreshCount + 1)}
+            >
+              Värskenda
+            </button>
+          </div>
         </div>
       )}
 
-      {sessions.length === 0 ? (
-        <p>Selle kursuse tunde pole veel märgitud.</p>
-      ) : (
-        <table border="1">
-          <thead>
-            <tr>
-              <th>Osaleja</th>
-              {sessions.map((se) => (
-                <th key={se.id}>{se.session_date}</th>
-              ))}
-              <th>Kohal kokku</th>
-            </tr>
-          </thead>
-          <tbody>
-            {students.map((st) => (
-              <tr key={st.id}>
-                <td>{st.full_name}</td>
-                {sessions.map((se) => (
-                  <td key={se.id}>
-                    {statusLabel(records[se.id + "_" + st.id])}
-                  </td>
+      <div className="card-body px-0 pb-0">
+        {sessions.length === 0 ? (
+          <p className="empty-state">
+            Selle kursuse tunde pole veel märgitud.
+          </p>
+        ) : (
+          <div className="table-responsive rounded-3">
+            <table className="table table-striped table-hover align-middle mb-0">
+              <thead className="table-light">
+                <tr>
+                  <th>Osaleja</th>
+                  {sessions.map((se) => (
+                    <th key={se.id}>{se.session_date}</th>
+                  ))}
+                  <th>Kohal kokku</th>
+                </tr>
+              </thead>
+              <tbody>
+                {students.map((st) => (
+                  <tr key={st.id}>
+                    <td>{st.full_name}</td>
+                    {sessions.map((se) => {
+                      const status = records[se.id + "_" + st.id];
+                      return (
+                        <td key={se.id}>
+                          <span className={`status-badge status-${status || "not-set"}`}>
+                            {statusLabel(status)}
+                          </span>
+                        </td>
+                      );
+                    })}
+                    <td>
+                      {sessions.filter(
+                        (se) => records[se.id + "_" + st.id] === "present"
+                      ).length} / {sessions.length}
+                    </td>
+                  </tr>
                 ))}
-                <td>
-                  {
-                    sessions.filter(
-                      (se) => records[se.id + "_" + st.id] === "present"
-                    ).length
-                  }{" "}
-                  / {sessions.length}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
+              </tbody>
+            </table>
+          </div>
+        )}
+      </div>
+    </section>
   );
 }
