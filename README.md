@@ -186,3 +186,7 @@ ORDER BY ats.session_date DESC, s.full_name;
 ## public key
 NEXT_PUBLIC_SUPABASE_URL=https://wzfsgsfhlchyxtiubxhj.supabase.co
 NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_Iek6yZEkn-nnr0s8nyrOPw_lkrJNoc2
+
+
+
+https://docs.google.com/presentation/d/19EKg1ULLuZvxNG9ZSy7HUVC38kW-MY1IJHLDp0bZj3s/edit?usp=sharing DOKS
