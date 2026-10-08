@@ -28,11 +28,14 @@ Open `http://localhost:3000`.
 
 - `app/layout.js` - root layout and application metadata
 
-## public key
-sb_publishable_Iek6yZEkn-nnr0s8nyrOPw_lkrJNoc2
 - `app/page.js` - App Router home page
 - `app/api/health/route.js` - Node.js-compatible App Router route handler
 
 The `app/` directory is the primary routing system. New pages should be added
 as route segments under `app/`; API endpoints should use `route.js` files in
 `app/api/`.
+
+
+## public key
+NEXT_PUBLIC_SUPABASE_URL=https://wzfsgsfhlchyxtiubxhj.supabase.co
+NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=sb_publishable_Iek6yZEkn-nnr0s8nyrOPw_lkrJNoc2
